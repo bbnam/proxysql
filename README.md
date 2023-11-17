@@ -70,5 +70,3 @@ proxysql-mysql-replication_prometheus_1             /bin/prometheus --config.f .
   | 20           | mysql-slave2 | 3306 | 0         | ONLINE | 1      | 0           | 100             | 5                   | 0       | 0              |         |
   +--------------+--------------+------+-----------+--------+--------+-------------+-----------------+---------------------+---------+----------------+---------+
   ```
-
-  ![1 initial-status](https://user-images.githubusercontent.com/13511520/83347808-86170700-a362-11ea-98da-9b5f21db7ee7.png)
