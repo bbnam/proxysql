@@ -48,15 +48,12 @@ proxysql-mysql-replication_prometheus_1             /bin/prometheus --config.f .
 - MySQL master
 
     ```
-    $ docker-compose exec mysql-master sh -c "export MYSQL_PWD=password; mysql -u root sbtest -e 'show master status\G'"
+     docker-compose exec mysql-master sh -c "export MYSQL_PWD=password; mysql -u root -e 'show master status\G'"
     ```
 
 - MySQL slave
-    
-    If slave fails to connect master, remove `{master,slave}/data` and restart master, then restart slave.
-
     ```
-    $ docker-compose exec mysql-slave1 sh -c "export MYSQL_PWD=password; mysql -u root sbtest -e 'show slave status\G'"
+     docker-compose exec mysql-slave1 sh -c "export MYSQL_PWD=password; mysql -u root -e 'show slave status\G'"
     ```
 
 
@@ -73,48 +70,5 @@ proxysql-mysql-replication_prometheus_1             /bin/prometheus --config.f .
   | 20           | mysql-slave2 | 3306 | 0         | ONLINE | 1      | 0           | 100             | 5                   | 0       | 0              |         |
   +--------------+--------------+------+-----------+--------+--------+-------------+-----------------+---------------------+---------+----------------+---------+
   ```
-
-## Run sysbench
-
-1. prepare test data
-
-```shell
-❯ sysbench --db-driver=mysql \
-        --mysql-host=0.0.0.0 \
-        --mysql-port=6033 \
-        --mysql-user=root \
-        --mysql-password=password \
-        --mysql-db=sbtest \
-        --threads=10 \
-        --tables=10 \
-        --table-size=10000 \
-        oltp_read_only \
-        prepare
-```
-
-2. run benchmark
-
-```shell
-❯ sysbench --db-driver=mysql \
-        --mysql-host=0.0.0.0 \
-        --mysql-port=6033 \
-        --mysql-user=root \
-        --mysql-password=password \
-        --mysql-db=sbtest \
-        --threads=100 \
-        --time=120 \
-        oltp_read_only \
-        run
-```
-
-
-## View DB metrics on Graphana
-
-  1. Access `localhost:3000` and login. (`id`: admin, `pass`: admin)
-  2. Go `Configuration > Add data source`
-  3. Add Prometheus. (`URL`: http://prometheus:9090)
-  4. Go `Create > Import` and import [MySQL Overview](https://github.com/percona/grafana-dashboards/blob/master/dashboards/MySQL_Overview.json) json.
-  5. Go `Dashboards > Home > MysQL Overview`
-
 
   ![1 initial-status](https://user-images.githubusercontent.com/13511520/83347808-86170700-a362-11ea-98da-9b5f21db7ee7.png)
